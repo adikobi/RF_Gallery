@@ -112,9 +112,11 @@ function loadExhibits() {
         const addExhibitFrame = createAddExhibitFrame();
         exhibitsGrid.appendChild(addExhibitFrame);
 
-        // Hide splash screen once data is loaded for the first time
+        // Hide splash screen once data is loaded for the first time, with a delay
         if (splashScreen && !splashScreen.classList.contains('hidden')) {
-            splashScreen.classList.add('hidden');
+            setTimeout(() => {
+                splashScreen.classList.add('hidden');
+            }, 2000); // 2-second delay
         }
     });
 }
