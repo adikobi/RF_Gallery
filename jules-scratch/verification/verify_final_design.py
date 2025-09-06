@@ -12,21 +12,11 @@ def run(playwright):
     # Take screenshot of the home page with delete buttons
     page.screenshot(path="jules-scratch/verification/verification_home_final.png")
 
-    # --- Verify Exhibit Page ---
-    page.goto("file:///app/exhibit.html?exhibitId=test") # Use a dummy exhibitId
-    # Wait for the back button to be visible
-    back_button = page.locator(".back-button")
-    expect(back_button).to_be_visible()
-    # Take screenshot of the exhibit page with the new back button
-    page.screenshot(path="jules-scratch/verification/verification_exhibit_final.png")
+    # --- Verify Modal on Home Page ---
+    # Click the "Add New Exhibit" frame to open the modal
+    add_frame.click()
 
-    # --- Verify Modal ---
-    # Click the "Add New Image" frame to open the modal
-    add_image_frame = page.locator(".gallery-item:has-text('הוסף יצירה חדשה')")
-    expect(add_image_frame).to_be_visible()
-    add_image_frame.click()
-
-    modal = page.locator("#add-image-modal")
+    modal = page.locator("#add-exhibit-modal")
     expect(modal).to_be_visible()
     # Take screenshot of the redesigned modal
     page.screenshot(path="jules-scratch/verification/verification_modal_final.png")

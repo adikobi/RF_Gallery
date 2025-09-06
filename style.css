@@ -83,6 +83,13 @@ header h1 {
     background-color: #e8eaed;
 }
 
+.header-delete-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    left: 1.5rem; /* Adjusted for RTL */
+}
+
 /* --- Main Content & Grid --- */
 main {
     padding: 2rem;
@@ -183,6 +190,7 @@ form {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    align-items: center; /* Center non-full-width items */
 }
 
 form input[type="text"], form input[type="date"], form textarea {
@@ -253,8 +261,10 @@ form button:hover, .file-input-label:hover {
 }
 
 .file-input-wrapper {
-    width: 100%;
-    text-align: center;
+    position: relative;
+    overflow: hidden;
+    display: inline-block; /* This makes the wrapper only as wide as its content */
+    cursor: pointer;
 }
 
 .file-input-label {
@@ -325,6 +335,7 @@ form button:hover, .file-input-label:hover {
 
     .modal-content {
         padding: 1.5rem;
-        width: 95%;
+        width: calc(100% - 2rem); /* Ensure 1rem margin on each side */
+        margin: 1rem;
     }
 }

@@ -127,24 +127,11 @@ function createExhibitElement(exhibit) {
         <div class="exhibit-info">
             <h3>${exhibit.name}</h3>
             <p>${exhibit.date}</p>
-            <div class="button-group">
-                 <button class="delete-btn">מחק תערוכה</button>
-            </div>
         </div>
     `;
     // Main element click navigates to exhibit
     element.addEventListener('click', () => {
         window.location.href = `exhibit.html?exhibitId=${exhibit.id}`;
-    });
-    // Delete button has its own listener
-    element.querySelector('.delete-btn').addEventListener('click', (e) => {
-        e.stopPropagation(); // Prevent navigation
-        const password = prompt("Please enter the password to delete the entire exhibit:");
-        if (password === DELETE_PASSWORD) {
-            deleteExhibit(exhibit.id);
-        } else if (password !== null) {
-            alert("Incorrect password.");
-        }
     });
     return element;
 }
@@ -194,8 +181,10 @@ function setupAddExhibitModal() {
     document.getElementById('exhibit-date').valueAsDate = new Date();
 
     closeButton.addEventListener('click', () => modal.style.display = 'none');
-    window.addEventListener('click', (event) => {
-        if (event.target == modal) modal.style.display = 'none';
+    modal.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
     });
 
     form.addEventListener('submit', (event) => {
@@ -230,9 +219,21 @@ function loadGallery(exhibitId) {
         if (doc.exists) {
             exhibitTitle.textContent = doc.data().name;
         } else {
+            // If exhibit doesn't exist, maybe it was deleted. Redirect home.
+            window.location.href = 'index.html';
             console.error("No such exhibit!");
         }
     }).catch(error => console.error("Error getting exhibit:", error));
+
+    const deleteBtn = document.getElementById('delete-exhibit-btn');
+    deleteBtn.addEventListener('click', () => {
+        const password = prompt("Please enter the password to delete the entire exhibit:");
+        if (password === DELETE_PASSWORD) {
+            deleteExhibit(exhibitId);
+        } else if (password !== null) {
+            alert("Incorrect password.");
+        }
+    });
 
     db.collection('exhibits').doc(exhibitId).collection('images').orderBy('date', 'desc').onSnapshot(snapshot => {
         galleryGrid.innerHTML = '';
@@ -307,6 +308,11 @@ function setupAddImageModal(exhibitId) {
     document.getElementById('image-date').valueAsDate = new Date();
 
     closeButton.addEventListener('click', () => modal.style.display = 'none');
+    modal.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
 
     form.addEventListener('submit', (event) => {
         event.preventDefault();
@@ -343,9 +349,13 @@ function setupViewImageModal(image) {
     modal.style.display = 'block';
 
     closeButton.onclick = () => modal.style.display = 'none';
-    window.onclick = (event) => {
-        if (event.target == modal) modal.style.display = 'none';
-    };
+    modal.addEventListener('click', (event) => {
+        // Clicks on the modal background (the overlay) will close it.
+        // Clicks on the image or description inside will not, because their target is not the modal itself.
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
 }
 
 function setupEditImageModal(image, exhibitId) {
@@ -361,6 +371,11 @@ function setupEditImageModal(image, exhibitId) {
     modal.style.display = 'block';
 
     closeButton.onclick = () => modal.style.display = 'none';
+    modal.addEventListener('click', (event) => {
+        if (event.target === modal) {
+            modal.style.display = 'none';
+        }
+    });
 
     form.onsubmit = (event) => {
         event.preventDefault();
