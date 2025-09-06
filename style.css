@@ -13,18 +13,21 @@
     transition: opacity 0.5s ease-out;
 }
 
-.spinner {
-    border: 5px solid #f3f3f3; /* Light grey */
-    border-top: 5px solid #D4AF37; /* Gold */
-    border-radius: 50%;
-    width: 50px;
-    height: 50px;
-    animation: spin 1s linear infinite;
+.splash-logo {
+    width: 150px;
+    height: 150px;
+    animation: fadeIn 1.5s ease-in-out;
 }
 
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
 }
 
 #splash-screen.hidden {
@@ -49,15 +52,23 @@ header {
     padding: 1rem 2rem;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: center; /* Keep this for overall centering */
+    gap: 1rem;
     position: relative;
-    border-bottom: 1px solid #dee2e6; /* Light border */
+    border-bottom: 1px solid #dee2e6;
 }
 
-header h1 {
+.header-logo {
+    height: 40px;
+    width: auto;
+    order: 2; /* Logo comes after title in flex order */
+}
+
+header h1, .header-title {
     margin: 0;
     font-weight: 700;
     font-size: 1.75rem;
+    order: 1; /* Title comes before logo in flex order */
 }
 
 .back-button {
