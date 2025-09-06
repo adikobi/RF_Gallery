@@ -74,6 +74,20 @@ document.addEventListener('DOMContentLoaded', () => {
             window.location.href = 'index.html';
         }
     }
+
+    // Handle custom file input label
+    document.querySelectorAll('input[type="file"]').forEach(fileInput => {
+        const label = document.querySelector(`label[for="${fileInput.id}"]`);
+        const originalLabelText = label.textContent;
+
+        fileInput.addEventListener('change', (e) => {
+            if (e.target.files.length > 0) {
+                label.textContent = e.target.files[0].name;
+            } else {
+                label.textContent = originalLabelText;
+            }
+        });
+    });
 });
 
 // ----------------- Home Page Functions -----------------
@@ -115,7 +129,7 @@ function createAddExhibitFrame() {
     element.style.backgroundImage = 'url(images/frame.png)';
     element.innerHTML = `
         <div class="exhibit-info">
-            <h3>Add New Exhibit</h3>
+            <h3>הוסף תערוכה חדשה</h3>
         </div>
     `;
     element.addEventListener('click', () => {
@@ -193,7 +207,7 @@ function createGalleryItemElement(image, exhibitId) {
         <div class="gallery-item-info">
             <h4>${image.title}</h4>
             <p>${image.date}</p>
-            <button class="edit-btn">Edit</button>
+            <button class="edit-btn">עריכה</button>
         </div>
     `;
     element.querySelector('img').addEventListener('click', () => setupViewImageModal(image));
@@ -210,7 +224,7 @@ function createAddImageFrame(exhibitId) {
     element.style.backgroundImage = 'url(images/frame.png)';
     element.innerHTML = `
         <div class="gallery-item-info">
-            <h4>Add New Image</h4>
+            <h4>הוסף יצירה חדשה</h4>
         </div>
     `;
     element.addEventListener('click', () => {

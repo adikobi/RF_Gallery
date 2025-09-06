@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="he" dir="rtl">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Exhibit</title>
+    <title>תערוכה</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&display=swap" rel="stylesheet">
@@ -11,8 +11,8 @@
 </head>
 <body>
     <header>
-        <a href="index.html" class="back-button">&larr; Back to All Exhibits</a>
-        <h1 id="exhibit-title">Exhibit Name</h1>
+        <a href="index.html" class="back-button">חזרה &rarr;</a>
+        <h1 id="exhibit-title">שם התערוכה</h1>
     </header>
     <main id="gallery-grid">
         <!-- Gallery items will be dynamically inserted here -->
@@ -22,13 +22,16 @@
     <div id="add-image-modal" class="modal" style="display:none;">
         <div class="modal-content">
             <span class="close-button">&times;</span>
-            <h2>Add New Image</h2>
+            <h2>הוסף יצירה חדשה</h2>
             <form id="add-image-form">
-                <input type="text" id="image-title" placeholder="Image Title" required>
+                <input type="text" id="image-title" placeholder="כותרת התמונה" required>
                 <input type="date" id="image-date" required>
-                <textarea id="image-description" placeholder="Image Description"></textarea>
-                <input type="file" id="image-file" accept="image/*" required>
-                <button type="submit">Add Image</button>
+                <textarea id="image-description" placeholder="תיאור התמונה"></textarea>
+                <div class="file-input-wrapper">
+                    <label for="image-file" class="file-input-label">בחר קובץ</label>
+                    <input type="file" id="image-file" accept="image/*" required>
+                </div>
+                <button type="submit">הוסף תמונה</button>
             </form>
         </div>
     </div>
@@ -46,14 +49,17 @@
     <div id="edit-image-modal" class="modal" style="display:none;">
         <div class="modal-content">
             <span class="close-button">&times;</span>
-            <h2>Edit Image</h2>
+            <h2>עריכת יצירה</h2>
             <form id="edit-image-form">
                 <input type="hidden" id="edit-image-id">
-                <input type="text" id="edit-image-title" placeholder="Image Title" required>
+                <input type="text" id="edit-image-title" placeholder="כותרת התמונה" required>
                 <input type="date" id="edit-image-date" required>
-                <textarea id="edit-image-description" placeholder="Image Description"></textarea>
-                <input type="file" id="edit-image-file" accept="image/*">
-                <button type="submit">Save Changes</button>
+                <textarea id="edit-image-description" placeholder="תיאור התמונה"></textarea>
+                <div class="file-input-wrapper">
+                    <label for="edit-image-file" class="file-input-label">בחר קובץ חדש (אופציונלי)</label>
+                    <input type="file" id="edit-image-file" accept="image/*">
+                </div>
+                <button type="submit">שמור שינויים</button>
             </form>
         </div>
     </div>
