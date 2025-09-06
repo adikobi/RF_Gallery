@@ -65,6 +65,7 @@ header {
 }
 
 header h1, .header-title {
+    font-family: 'Cinzel', serif;
     margin: 0;
     font-weight: 700;
     font-size: 1.75rem;
