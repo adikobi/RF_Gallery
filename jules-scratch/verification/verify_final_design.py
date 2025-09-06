@@ -2,7 +2,7 @@ from playwright.sync_api import sync_playwright, expect
 
 def run(playwright):
     browser = playwright.chromium.launch()
-    page = browser.new_page()
+    page = browser.new_page(viewport={"width": 375, "height": 667})
 
     # Verify Home Page
     page.goto("file:///app/index.html")

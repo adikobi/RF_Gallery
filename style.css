@@ -175,6 +175,7 @@ form {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
+    align-items: center; /* Center flex items horizontally */
 }
 
 form input[type="text"], form input[type="date"], form textarea {
@@ -196,7 +197,7 @@ form input:focus, form textarea:focus {
 form button, .file-input-label {
     font-family: 'Heebo', sans-serif;
     padding: 12px 20px;
-    border-radius: 8px;
+    border-radius: 20px; /* More rounded corners */
     border: none;
     background-color: #D4AF37; /* Gold */
     color: #202124;
@@ -262,4 +263,39 @@ form button:hover, .file-input-label:hover {
     padding: 1rem;
     border-radius: 8px;
     max-width: 600px;
+}
+
+/* --- Mobile Responsiveness --- */
+@media (max-width: 600px) {
+    body {
+        font-size: 14px;
+    }
+
+    header {
+        padding: 1rem;
+        flex-direction: column;
+    }
+
+    header h1 {
+        font-size: 1.5rem;
+    }
+
+    .back-button {
+        position: static;
+        transform: none;
+        margin-bottom: 0.5rem;
+    }
+
+    main {
+        padding: 1rem;
+    }
+
+    #exhibits-grid, #gallery-grid {
+        gap: 1rem;
+    }
+
+    .modal-content {
+        padding: 1.5rem;
+        width: 95%;
+    }
 }
