@@ -1,3 +1,28 @@
+/* --- Splash Screen --- */
+#splash-screen {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 200;
+    transition: opacity 0.5s ease-out;
+}
+
+#splash-screen img {
+    width: 100px; /* Or whatever size is appropriate */
+    height: auto;
+}
+
+#splash-screen.hidden {
+    opacity: 0;
+    pointer-events: none;
+}
+
 /* --- General Body & Typography --- */
 body {
     font-family: 'Heebo', sans-serif;
@@ -13,9 +38,17 @@ header {
     background-color: #ffffff;
     color: #202124;
     padding: 1rem 2rem;
-    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     position: relative;
     border-bottom: 1px solid #dee2e6; /* Light border */
+}
+
+.header-logo {
+    height: 40px; /* Adjust size as needed */
+    width: auto;
+    margin-right: 1rem; /* For RTL, this will be margin-left effectively */
 }
 
 header h1 {
@@ -68,7 +101,7 @@ main {
 
 .exhibit-frame img, .gallery-item img {
     width: 100%;
-    height: 200px; /* Fixed height for uniformity */
+    height: 280px; /* Increased height for a more rectangular, portrait-friendly shape */
     object-fit: cover; /* Ensures image covers the area without distortion */
     display: block;
 }

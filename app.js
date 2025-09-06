@@ -94,7 +94,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 function loadExhibits() {
     const exhibitsGrid = document.getElementById('exhibits-grid');
-    db.collection('exhibits').orderBy('date', 'desc').onSnapshot(snapshot => {
+    const splashScreen = document.getElementById('splash-screen');
+
+    const unsubscribe = db.collection('exhibits').orderBy('date', 'desc').onSnapshot(snapshot => {
         exhibitsGrid.innerHTML = ''; // Clear existing exhibits
         snapshot.forEach(doc => {
             const exhibit = { id: doc.id, ...doc.data() };
@@ -103,6 +105,11 @@ function loadExhibits() {
         });
         const addExhibitFrame = createAddExhibitFrame();
         exhibitsGrid.appendChild(addExhibitFrame);
+
+        // Hide splash screen once data is loaded for the first time
+        if (splashScreen && !splashScreen.classList.contains('hidden')) {
+            splashScreen.classList.add('hidden');
+        }
     });
 }
 

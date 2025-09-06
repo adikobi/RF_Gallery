@@ -6,7 +6,9 @@ def run(playwright):
 
     # Verify Home Page
     page.goto("file:///app/index.html")
-    page.wait_for_selector('.exhibit-frame')
+    # Wait for the "Add New Exhibit" frame to be visible. This confirms the JS has loaded.
+    add_frame = page.locator(".exhibit-frame:has-text('הוסף תערוכה חדשה')")
+    expect(add_frame).to_be_visible(timeout=10000)
     page.screenshot(path="jules-scratch/verification/verification_home.png")
 
     # Verify Exhibit Page
