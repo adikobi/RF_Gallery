@@ -285,6 +285,24 @@ form button:hover, .file-input-label:hover {
 #view-image-modal .modal-content {
     background-color: transparent;
     box-shadow: none;
+    position: static; /* Override absolute positioning for this specific modal */
+    transform: none;
+}
+
+.view-image-wrapper {
+    position: relative;
+    display: inline-block; /* Shrink-wrap to the image size */
+}
+
+#view-image-modal .close-button {
+    position: absolute;
+    top: 0;
+    left: 0; /* For RTL, this is the top-right */
+    background-color: rgba(0,0,0,0.5);
+    color: white;
+    border-radius: 0 0 8px 0;
+    padding: 0.25rem 0.75rem;
+    line-height: 1.5;
 }
 
 #full-screen-image {
