@@ -282,11 +282,20 @@ form button:hover, .file-input-label:hover {
 }
 
 /* --- Full Screen Image Modal --- */
+#view-image-modal {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 #view-image-modal .modal-content {
     background-color: transparent;
     box-shadow: none;
-    position: static; /* Override absolute positioning for this specific modal */
+    /* The centering is now handled by the parent, so we don't need absolute positioning here */
+    position: static;
     transform: none;
+    width: auto; /* Allow content to dictate width */
+    padding: 0;
 }
 
 .view-image-wrapper {
