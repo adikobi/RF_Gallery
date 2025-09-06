@@ -10,6 +10,7 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
+const DELETE_PASSWORD = '1234';
 
 // ----------------- Image Processing Helper -----------------
 
@@ -121,18 +122,53 @@ function loadExhibits() {
 function createExhibitElement(exhibit) {
     const element = document.createElement('div');
     element.className = 'exhibit-frame';
-    element.style.backgroundImage = 'url(images/frame.png)';
     element.innerHTML = `
         <img src="${exhibit.imageUrl}" alt="${exhibit.name}">
         <div class="exhibit-info">
             <h3>${exhibit.name}</h3>
             <p>${exhibit.date}</p>
+            <div class="button-group">
+                 <button class="delete-btn">מחק תערוכה</button>
+            </div>
         </div>
     `;
+    // Main element click navigates to exhibit
     element.addEventListener('click', () => {
         window.location.href = `exhibit.html?exhibitId=${exhibit.id}`;
     });
+    // Delete button has its own listener
+    element.querySelector('.delete-btn').addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent navigation
+        const password = prompt("Please enter the password to delete the entire exhibit:");
+        if (password === DELETE_PASSWORD) {
+            deleteExhibit(exhibit.id);
+        } else if (password !== null) {
+            alert("Incorrect password.");
+        }
+    });
     return element;
+}
+
+async function deleteExhibit(exhibitId) {
+    const exhibitRef = db.collection('exhibits').doc(exhibitId);
+    const imagesRef = exhibitRef.collection('images');
+
+    // Delete all images in the subcollection
+    try {
+        const snapshot = await imagesRef.get();
+        const batch = db.batch();
+        snapshot.docs.forEach(doc => {
+            batch.delete(doc.ref);
+        });
+        await batch.commit();
+        console.log("All images in subcollection deleted.");
+
+        // Then delete the main exhibit document
+        await exhibitRef.delete();
+        console.log("Exhibit successfully deleted!");
+    } catch (error) {
+        console.error("Error removing exhibit: ", error);
+    }
 }
 
 function createAddExhibitFrame() {
@@ -219,7 +255,10 @@ function createGalleryItemElement(image, exhibitId) {
         <div class="gallery-item-info">
             <h4>${image.title}</h4>
             <p>${image.date}</p>
-            <button class="edit-btn">עריכה</button>
+            <div class="button-group">
+                <button class="edit-btn">עריכה</button>
+                <button class="delete-btn">מחק</button>
+            </div>
         </div>
     `;
     element.querySelector('img').addEventListener('click', () => setupViewImageModal(image));
@@ -227,7 +266,22 @@ function createGalleryItemElement(image, exhibitId) {
         e.stopPropagation();
         setupEditImageModal(image, exhibitId);
     });
+    element.querySelector('.delete-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        const password = prompt("Please enter the password to delete:");
+        if (password === DELETE_PASSWORD) {
+            deleteImage(exhibitId, image.id);
+        } else if (password !== null) {
+            alert("Incorrect password.");
+        }
+    });
     return element;
+}
+
+function deleteImage(exhibitId, imageId) {
+    db.collection('exhibits').doc(exhibitId).collection('images').doc(imageId).delete()
+        .then(() => console.log("Image successfully deleted!"))
+        .catch(error => console.error("Error removing image: ", error));
 }
 
 function createAddImageFrame(exhibitId) {

@@ -63,16 +63,24 @@ header h1 {
 .back-button {
     position: absolute;
     top: 50%;
+    right: 1.5rem; /* Adjusted for RTL */
     transform: translateY(-50%);
-    right: 2rem; /* Adjusted for RTL */
-    color: #5f6368;
+    color: #202124;
+    background-color: #f1f3f4;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
     text-decoration: none;
-    font-size: 1rem;
-    font-weight: 400;
+    font-size: 1.5rem;
+    line-height: 1; /* Helps with vertical alignment of arrow */
+    transition: background-color 0.3s ease;
 }
 
 .back-button:hover {
-    color: #4285F4; /* Google Blue */
+    background-color: #e8eaed;
 }
 
 /* --- Main Content & Grid --- */
@@ -140,7 +148,7 @@ main {
     color: #202124;
     padding: 2rem;
     border: none;
-    border-radius: 8px; /* Rounded corners */
+    border-radius: 16px; /* Softer corners */
     width: 90%;
     max-width: 500px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
@@ -175,7 +183,6 @@ form {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
-    align-items: center; /* Center flex items horizontally */
 }
 
 form input[type="text"], form input[type="date"], form textarea {
@@ -186,6 +193,8 @@ form input[type="text"], form input[type="date"], form textarea {
     background-color: #f8f9fa;
     color: #202124;
     font-size: 1rem;
+    width: 100%;
+    box-sizing: border-box; /* Important for width calculation */
 }
 
 form input:focus, form textarea:focus {
@@ -223,12 +232,33 @@ form button:hover, .file-input-label:hover {
     background-color: #e8eaed;
 }
 
-.file-input-wrapper {
-    position: relative;
-    overflow: hidden;
-    display: inline-block;
+.button-group {
+    margin-top: 1rem;
+    display: flex;
+    justify-content: center;
+    gap: 0.5rem;
+}
+
+.delete-btn {
+    background-color: #ea4335; /* Google Red for delete actions */
+    color: white;
+    padding: 8px 16px;
+    border: none;
+    border-radius: 8px;
     cursor: pointer;
+}
+
+.delete-btn:hover {
+    background-color: #d93025;
+}
+
+.file-input-wrapper {
     width: 100%;
+    text-align: center;
+}
+
+.file-input-label {
+    font-size: 0.9rem !important;
 }
 
 .file-input-wrapper input[type=file] {
@@ -281,9 +311,8 @@ form button:hover, .file-input-label:hover {
     }
 
     .back-button {
-        position: static;
-        transform: none;
-        margin-bottom: 0.5rem;
+        top: 1.25rem; /* Adjust for smaller header */
+        right: 1rem;
     }
 
     main {
