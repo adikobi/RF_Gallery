@@ -13,9 +13,18 @@
     transition: opacity 0.5s ease-out;
 }
 
-#splash-screen img {
-    width: 100px; /* Or whatever size is appropriate */
-    height: auto;
+.spinner {
+    border: 5px solid #f3f3f3; /* Light grey */
+    border-top: 5px solid #D4AF37; /* Gold */
+    border-radius: 50%;
+    width: 50px;
+    height: 50px;
+    animation: spin 1s linear infinite;
+}
+
+@keyframes spin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
 #splash-screen.hidden {
@@ -43,12 +52,6 @@ header {
     justify-content: center;
     position: relative;
     border-bottom: 1px solid #dee2e6; /* Light border */
-}
-
-.header-logo {
-    height: 40px; /* Adjust size as needed */
-    width: auto;
-    margin-right: 1rem; /* For RTL, this will be margin-left effectively */
 }
 
 header h1 {
@@ -93,6 +96,7 @@ main {
     transition: box-shadow 0.3s ease;
     overflow: hidden; /* Ensures image respects border-radius */
     padding: 0; /* Remove old padding */
+    /* background-image property removed */
 }
 
 .exhibit-frame:hover, .gallery-item:hover {
@@ -125,12 +129,13 @@ main {
     height: 100%;
     overflow: auto;
     background-color: rgba(0,0,0,0.5);
-    display: flex;
-    align-items: center;
-    justify-content: center;
 }
 
 .modal-content {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     background-color: #ffffff;
     color: #202124;
     padding: 2rem;
@@ -139,7 +144,6 @@ main {
     width: 90%;
     max-width: 500px;
     box-shadow: 0 5px 15px rgba(0,0,0,0.3);
-    position: relative;
 }
 
 .modal-content h2 {
@@ -185,8 +189,8 @@ form input[type="text"], form input[type="date"], form textarea {
 
 form input:focus, form textarea:focus {
     outline: none;
-    border-color: #4285F4;
-    box-shadow: 0 0 0 2px rgba(66, 133, 244, 0.2);
+    border-color: #D4AF37; /* Gold */
+    box-shadow: 0 0 0 2px rgba(212, 175, 55, 0.2);
 }
 
 form button, .file-input-label {
@@ -194,8 +198,8 @@ form button, .file-input-label {
     padding: 12px 20px;
     border-radius: 8px;
     border: none;
-    background-color: #4285F4; /* Google Blue */
-    color: #ffffff;
+    background-color: #D4AF37; /* Gold */
+    color: #202124;
     font-weight: 700;
     cursor: pointer;
     transition: background-color 0.3s ease;
@@ -203,7 +207,7 @@ form button, .file-input-label {
 }
 
 form button:hover, .file-input-label:hover {
-    background-color: #3367d6;
+    background-color: #c8a02b; /* Darker Gold */
 }
 
 .edit-btn {

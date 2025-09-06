@@ -3,19 +3,19 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>גלריית אמנות</title>
+    <title>RF Royal Gallery</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Heebo:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
     <link rel="stylesheet" href="style.css">
 </head>
 <body>
     <div id="splash-screen">
-        <img src="images/logo.png" alt="Logo">
+        <div class="spinner"></div>
     </div>
     <header>
-        <img src="images/logo.png" alt="Logo" class="header-logo">
-        <h1>גלריית אמנות</h1>
+        <h1>RF Royal Gallery</h1>
     </header>
     <main id="exhibits-grid">
         <!-- Exhibit frames will be dynamically inserted here -->
@@ -41,6 +41,7 @@
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-app-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-firestore-compat.js"></script>
     <script src="https://www.gstatic.com/firebasejs/9.6.1/firebase-storage-compat.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
     <script src="app.js"></script>
 </body>
 </html>

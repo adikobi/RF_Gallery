@@ -11,10 +11,13 @@ def run(playwright):
     expect(add_frame).to_be_visible(timeout=10000)
     page.screenshot(path="jules-scratch/verification/verification_home.png")
 
-    # Verify Exhibit Page
-    page.goto("file:///app/exhibit.html?exhibitId=test") # Use a dummy exhibitId for testing
-    page.wait_for_selector('.back-button')
-    page.screenshot(path="jules-scratch/verification/verification_exhibit.png")
+    # Click the add frame to open the modal
+    add_frame.click()
+    modal = page.locator("#add-exhibit-modal")
+    expect(modal).to_be_visible()
+
+    # Verify the modal
+    page.screenshot(path="jules-scratch/verification/verification_modal.png")
 
     browser.close()
 

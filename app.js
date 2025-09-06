@@ -88,6 +88,11 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     });
+
+    // Initialize Flatpickr
+    flatpickr('input[type="date"]', {
+        dateFormat: "Y-m-d",
+    });
 });
 
 // ----------------- Home Page Functions -----------------
