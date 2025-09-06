@@ -10,8 +10,50 @@ const firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 const db = firebase.firestore();
-const storage = firebase.storage();
 
+// ----------------- Image Processing Helper -----------------
+
+/**
+ * Processes an image file, resizing it if necessary to fit under a size limit.
+ * @param {File} file The image file to process.
+ * @param {Function} callback The function to call with the processed image dataURL.
+ */
+function processImage(file, callback) {
+    const MAX_SIZE_BYTES = 1024 * 768; // 768KB, leaving buffer for Base64 encoding
+    const reader = new FileReader();
+
+    if (file.size <= MAX_SIZE_BYTES) {
+        // If file is small enough, just convert to Base64
+        reader.onload = (e) => callback(e.target.result);
+        reader.readAsDataURL(file);
+    } else {
+        // If file is too large, resize it using a canvas
+        const img = new Image();
+        img.onload = () => {
+            const canvas = document.createElement('canvas');
+            const ctx = canvas.getContext('2d');
+
+            // Calculate new dimensions
+            const ratio = Math.sqrt(MAX_SIZE_BYTES / file.size);
+            const newWidth = img.width * ratio;
+            const newHeight = img.height * ratio;
+
+            canvas.width = newWidth;
+            canvas.height = newHeight;
+
+            // Draw resized image
+            ctx.drawImage(img, 0, 0, newWidth, newHeight);
+
+            // Get the resized image as a data URL
+            const resizedDataUrl = canvas.toDataURL(file.type);
+            callback(resizedDataUrl);
+        };
+        img.src = URL.createObjectURL(file);
+    }
+}
+
+
+// ----------------- Event Listeners -----------------
 
 document.addEventListener('DOMContentLoaded', () => {
     // Code for the home page (index.html)
@@ -45,7 +87,6 @@ function loadExhibits() {
             const exhibitElement = createExhibitElement(exhibit);
             exhibitsGrid.appendChild(exhibitElement);
         });
-        // Add the "add new" frame after the exhibits
         const addExhibitFrame = createAddExhibitFrame();
         exhibitsGrid.appendChild(addExhibitFrame);
     });
@@ -90,14 +131,9 @@ function setupAddExhibitModal() {
 
     document.getElementById('exhibit-date').valueAsDate = new Date();
 
-    closeButton.addEventListener('click', () => {
-        modal.style.display = 'none';
-    });
-
+    closeButton.addEventListener('click', () => modal.style.display = 'none');
     window.addEventListener('click', (event) => {
-        if (event.target == modal) {
-            modal.style.display = 'none';
-        }
+        if (event.target == modal) modal.style.display = 'none';
     });
 
     form.addEventListener('submit', (event) => {
@@ -107,20 +143,17 @@ function setupAddExhibitModal() {
         const imageFile = document.getElementById('exhibit-image').files[0];
 
         if (name && date && imageFile) {
-            const storageRef = storage.ref(`exhibits/${imageFile.name}`);
-            storageRef.put(imageFile).then(snapshot => {
-                snapshot.ref.getDownloadURL().then(downloadURL => {
-                    db.collection('exhibits').add({
-                        name: name,
-                        date: date,
-                        imageUrl: downloadURL
-                    }).then(() => {
-                        modal.style.display = 'none';
-                        form.reset();
-                        document.getElementById('exhibit-date').valueAsDate = new Date();
-                    }).catch(error => console.error("Error adding document: ", error));
-                });
-            }).catch(error => console.error("Error uploading file: ", error));
+            processImage(imageFile, (imageUrl) => {
+                db.collection('exhibits').add({
+                    name: name,
+                    date: date,
+                    imageUrl: imageUrl
+                }).then(() => {
+                    modal.style.display = 'none';
+                    form.reset();
+                    document.getElementById('exhibit-date').valueAsDate = new Date();
+                }).catch(error => console.error("Error adding document: ", error));
+            });
         }
     });
 }
@@ -131,7 +164,6 @@ function loadGallery(exhibitId) {
     const galleryGrid = document.getElementById('gallery-grid');
     const exhibitTitle = document.getElementById('exhibit-title');
 
-    // Fetch exhibit title
     db.collection('exhibits').doc(exhibitId).get().then(doc => {
         if (doc.exists) {
             exhibitTitle.textContent = doc.data().name;
@@ -140,9 +172,8 @@ function loadGallery(exhibitId) {
         }
     }).catch(error => console.error("Error getting exhibit:", error));
 
-    // Load gallery images
     db.collection('exhibits').doc(exhibitId).collection('images').orderBy('date', 'desc').onSnapshot(snapshot => {
-        galleryGrid.innerHTML = ''; // Clear existing images
+        galleryGrid.innerHTML = '';
         snapshot.forEach(doc => {
             const image = { id: doc.id, ...doc.data() };
             const galleryItem = createGalleryItemElement(image, exhibitId);
@@ -165,9 +196,7 @@ function createGalleryItemElement(image, exhibitId) {
             <button class="edit-btn">Edit</button>
         </div>
     `;
-    element.querySelector('img').addEventListener('click', () => {
-        setupViewImageModal(image);
-    });
+    element.querySelector('img').addEventListener('click', () => setupViewImageModal(image));
     element.querySelector('.edit-btn').addEventListener('click', (e) => {
         e.stopPropagation();
         setupEditImageModal(image, exhibitId);
@@ -197,9 +226,7 @@ function setupAddImageModal(exhibitId) {
 
     document.getElementById('image-date').valueAsDate = new Date();
 
-    closeButton.addEventListener('click', () => {
-        modal.style.display = 'none';
-    });
+    closeButton.addEventListener('click', () => modal.style.display = 'none');
 
     form.addEventListener('submit', (event) => {
         event.preventDefault();
@@ -209,21 +236,18 @@ function setupAddImageModal(exhibitId) {
         const imageFile = document.getElementById('image-file').files[0];
 
         if (title && date && imageFile) {
-            const storageRef = storage.ref(`images/${exhibitId}/${imageFile.name}`);
-            storageRef.put(imageFile).then(snapshot => {
-                snapshot.ref.getDownloadURL().then(downloadURL => {
-                    db.collection('exhibits').doc(exhibitId).collection('images').add({
-                        title: title,
-                        date: date,
-                        description: description,
-                        imageUrl: downloadURL
-                    }).then(() => {
-                        modal.style.display = 'none';
-                        form.reset();
-                        document.getElementById('image-date').valueAsDate = new Date();
-                    }).catch(error => console.error("Error adding image document: ", error));
-                });
-            }).catch(error => console.error("Error uploading image file: ", error));
+            processImage(imageFile, (imageUrl) => {
+                db.collection('exhibits').doc(exhibitId).collection('images').add({
+                    title: title,
+                    date: date,
+                    description: description,
+                    imageUrl: imageUrl
+                }).then(() => {
+                    modal.style.display = 'none';
+                    form.reset();
+                    document.getElementById('image-date').valueAsDate = new Date();
+                }).catch(error => console.error("Error adding image document: ", error));
+            });
         }
     });
 }
@@ -240,9 +264,7 @@ function setupViewImageModal(image) {
 
     closeButton.onclick = () => modal.style.display = 'none';
     window.onclick = (event) => {
-        if (event.target == modal) {
-            modal.style.display = 'none';
-        }
+        if (event.target == modal) modal.style.display = 'none';
     };
 }
 
@@ -271,20 +293,15 @@ function setupEditImageModal(image, exhibitId) {
         const imageRef = db.collection('exhibits').doc(exhibitId).collection('images').doc(imageId);
 
         if (imageFile) {
-            // If a new file is uploaded, upload it and then update the doc
-            const storageRef = storage.ref(`images/${exhibitId}/${imageFile.name}`);
-            storageRef.put(imageFile).then(snapshot => {
-                snapshot.ref.getDownloadURL().then(downloadURL => {
-                    imageRef.update({
-                        title,
-                        date,
-                        description,
-                        imageUrl: downloadURL
-                    }).then(() => modal.style.display = 'none');
-                });
+            processImage(imageFile, (imageUrl) => {
+                imageRef.update({
+                    title,
+                    date,
+                    description,
+                    imageUrl: imageUrl
+                }).then(() => modal.style.display = 'none');
             });
         } else {
-            // If no new file, just update the text fields
             imageRef.update({
                 title,
                 date,
