@@ -265,16 +265,17 @@ form button:hover, .file-input-label:hover {
 }
 
 .delete-btn {
-    background-color: #ea4335; /* Google Red for delete actions */
+    background-color: #800020; /* Royal Burgundy */
     color: white;
     padding: 8px 16px;
     border: none;
     border-radius: 8px;
     cursor: pointer;
+    transition: background-color 0.3s ease;
 }
 
 .delete-btn:hover {
-    background-color: #d93025;
+    background-color: #640019; /* Darker Burgundy */
 }
 
 .file-input-wrapper {
