@@ -379,7 +379,7 @@ form button:hover, .file-input-label:hover {
 
     .modal-content {
         padding: 1.5rem;
-        width: 90%;
+        width: 85%;
         margin: 0 auto; /* Center the modal */
     }
 }
