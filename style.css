@@ -309,11 +309,14 @@ form button:hover, .file-input-label:hover {
 #view-image-modal .modal-content {
     background-color: transparent;
     box-shadow: none;
-    /* The centering is now handled by the parent, so we don't need absolute positioning here */
     position: static;
     transform: none;
     width: auto; /* Allow content to dictate width */
     padding: 0;
+    /* Ensure content inside is centered */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .view-image-wrapper {
