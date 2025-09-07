@@ -219,7 +219,16 @@ function loadGallery(exhibitId) {
 
     db.collection('exhibits').doc(exhibitId).get().then(doc => {
         if (doc.exists) {
-            exhibitTitle.textContent = doc.data().name;
+            const titleText = doc.data().name;
+            exhibitTitle.textContent = titleText;
+
+            // Check for Hebrew characters and apply the correct font class
+            const hebrewRegex = /[\u0590-\u05FF]/;
+            if (hebrewRegex.test(titleText)) {
+                exhibitTitle.classList.add('hebrew-font');
+            } else {
+                exhibitTitle.classList.remove('hebrew-font');
+            }
         } else {
             // If exhibit doesn't exist, maybe it was deleted. Redirect home.
             window.location.href = 'index.html';

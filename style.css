@@ -72,6 +72,11 @@ header h1, .header-title {
     order: 1; /* Title comes before logo in flex order */
 }
 
+/* Class to switch to Hebrew font when needed */
+.hebrew-font {
+    font-family: 'Heebo', sans-serif !important;
+}
+
 .back-button {
     position: absolute;
     top: 50%;
