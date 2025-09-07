@@ -27,7 +27,7 @@
             <h2>הוסף יצירה חדשה</h2>
             <form id="add-image-form">
                 <input type="text" id="image-title" placeholder="כותרת התמונה" required>
-                <input type="date" id="image-date" required>
+                <input type="text" id="image-date" class="datepicker" placeholder="תאריך" required>
                 <textarea id="image-description" placeholder="תיאור התמונה"></textarea>
                 <div class="file-input-wrapper">
                     <label for="image-file" class="file-input-label">בחר קובץ</label>
@@ -57,7 +57,7 @@
             <form id="edit-image-form">
                 <input type="hidden" id="edit-image-id">
                 <input type="text" id="edit-image-title" placeholder="כותרת התמונה" required>
-                <input type="date" id="edit-image-date" required>
+                <input type="text" id="edit-image-date" class="datepicker" placeholder="תאריך" required>
                 <textarea id="edit-image-description" placeholder="תיאור התמונה"></textarea>
                 <div class="file-input-wrapper">
                     <label for="edit-image-file" class="file-input-label">בחר קובץ חדש (אופציונלי)</label>

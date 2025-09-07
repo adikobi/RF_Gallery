@@ -91,7 +91,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 
     // Initialize Flatpickr
-    flatpickr('input[type="date"]', {
+    flatpickr('.datepicker', {
         dateFormat: "Y-m-d",
     });
 });
@@ -180,7 +180,8 @@ function setupAddExhibitModal() {
     const form = document.getElementById('add-exhibit-form');
     const closeButton = modal.querySelector('.close-button');
 
-    document.getElementById('exhibit-date').valueAsDate = new Date();
+    // Set default date for the text input using flatpickr's formatting
+    document.getElementById('exhibit-date').value = flatpickr.formatDate(new Date(), "Y-m-d");
 
     closeButton.addEventListener('click', () => modal.style.display = 'none');
     modal.addEventListener('click', (event) => {
@@ -204,7 +205,8 @@ function setupAddExhibitModal() {
                 }).then(() => {
                     modal.style.display = 'none';
                     form.reset();
-                    document.getElementById('exhibit-date').valueAsDate = new Date();
+                    // Set default date for the text input using flatpickr's formatting
+                    document.getElementById('exhibit-date').value = flatpickr.formatDate(new Date(), "Y-m-d");
                 }).catch(error => console.error("Error adding document: ", error));
             });
         }
@@ -316,7 +318,8 @@ function setupAddImageModal(exhibitId) {
     const form = document.getElementById('add-image-form');
     const closeButton = modal.querySelector('.close-button');
 
-    document.getElementById('image-date').valueAsDate = new Date();
+    // Set default date for the text input using flatpickr's formatting
+    document.getElementById('image-date').value = flatpickr.formatDate(new Date(), "Y-m-d");
 
     closeButton.addEventListener('click', () => modal.style.display = 'none');
     modal.addEventListener('click', (event) => {
@@ -342,7 +345,8 @@ function setupAddImageModal(exhibitId) {
                 }).then(() => {
                     modal.style.display = 'none';
                     form.reset();
-                    document.getElementById('image-date').valueAsDate = new Date();
+                     // Set default date for the text input using flatpickr's formatting
+                    document.getElementById('image-date').value = flatpickr.formatDate(new Date(), "Y-m-d");
                 }).catch(error => console.error("Error adding image document: ", error));
             });
         }
